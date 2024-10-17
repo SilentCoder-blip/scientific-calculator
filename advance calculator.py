@@ -1,38 +1,30 @@
 import streamlit as st
 import math
 
-# Define the functions
-def evaluate_expression(expression):
+# Function to evaluate the expression
+def evaluate_expression(expr):
     try:
-        result = str(eval(expression))
-    except Exception:
-        result = "Error"
-    return result
+        # Replace 'x' with '*' for multiplication
+        expr = expr.replace('x', '*')
+        # Evaluate the expression
+        return eval(expr)
+    except Exception as e:
+        return "Error"
 
-# Create a Streamlit app
-st.title("Scientific Calculator")
+# Streamlit application
+st.title("Calculator")
 
-# Display input field
-expression = st.text_input("Enter your expression:", "")
+# Input field for the user to enter expressions
+expression = st.text_input("Enter your expression:")
 
-# Display buttons
-if st.button("Evaluate"):
-    result = evaluate_expression(expression)
-    st.write(f"Result: {result}")
+# Button to calculate the result
+if st.button("Calculate"):
+    if expression:
+        result = evaluate_expression(expression)
+        st.write(f"Result: {result}")
+    else:
+        st.write("Please enter an expression.")
 
-# Optional advanced mathematical functions
-st.write("### Advanced Functions")
-
-# Trigonometric functions
-if st.button("sin(x)"):
-    expression += "math.sin("
-if st.button("cos(x)"):
-    expression += "math.cos("
-if st.button("tan(x)"):
-    expression += "math.tan("
-if st.button("log(x)"):
-    expression += "math.log("
-if st.button("sqrt(x)"):
-    expression += "math.sqrt("
-
-st.write(f"Updated expression: {expression}")
+# Clear button
+if st.button("Clear"):
+    st.experimental_rerun()
