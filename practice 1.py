@@ -1,79 +1,70 @@
 import streamlit as st
 import math
 
-# Title of the web app
+# Title of the calculator
 st.title("Scientific Calculator")
 
-# Add more scientific operations to the dropdown menu
-operations = ["Add", "Subtract", "Multiply", "Divide", "Square Root", "Exponentiation", "Sine", "Cosine", "Tangent", "Logarithm"]
-operation = st.selectbox("Choose an operation", operations)
+# Dropdown menu for selecting the operation
+operation = st.selectbox(
+    "Choose an operation:",
+    ("Add", "Subtract", "Multiply", "Divide", "Square Root", 
+     "Exponentiation", "Sine", "Cosine", "Tangent", "Logarithm")
+)
 
-# Inputs for numbers (some operations may require only one input)
-if operation == "Square Root" or operation in ["Sine", "Cosine", "Tangent", "Logarithm"]:
-    num1 = st.number_input("Enter a number:", value=0.0)
-    num2 = None
+# Input fields for the numbers
+if operation in ("Sine", "Cosine", "Tangent", "Square Root", "Logarithm"):
+    num1 = st.number_input("Enter the number:")
 else:
-    num1 = st.number_input("Enter first number:", value=0.0)
-    num2 = st.number_input("Enter second number:", value=0.0)
-
-# Function definitions for basic and scientific operations
-def add(x, y):
-    return x + y
-
-def subtract(x, y):
-    return x - y
-
-def multiply(x, y):
-    return x * y
-
-def divide(x, y):
-    if y == 0:
-        return "Error! Division by zero."
-    return x / y
-
-def square_root(x):
-    if x < 0:
-        return "Error! Square root of negative number."
-    return math.sqrt(x)
-
-def exponentiation(x, y):
-    return math.pow(x, y)
-
-def sine(x):
-    return math.sin(math.radians(x))
-
-def cosine(x):
-    return math.cos(math.radians(x))
-
-def tangent(x):
-    return math.tan(math.radians(x))
-
-def logarithm(x):
-    if x <= 0:
-        return "Error! Logarithm of non-positive number."
-    return math.log(x)
+    num1 = st.number_input("Enter the first number:")
+    num2 = st.number_input("Enter the second number:", 0.0)
 
 # Perform the selected operation
 if st.button("Calculate"):
     if operation == "Add":
-        result = add(num1, num2)
+        result = num1 + num2
+        st.success(f"The result of addition is {result}")
+
     elif operation == "Subtract":
-        result = subtract(num1, num2)
+        result = num1 - num2
+        st.success(f"The result of subtraction is {result}")
+
     elif operation == "Multiply":
-        result = multiply(num1, num2)
+        result = num1 * num2
+        st.success(f"The result of multiplication is {result}")
+
     elif operation == "Divide":
-        result = divide(num1, num2)
+        if num2 == 0:
+            st.error("Error! Division by zero.")
+        else:
+            result = num1 / num2
+            st.success(f"The result of division is {result}")
+
     elif operation == "Square Root":
-        result = square_root(num1)
+        if num1 < 0:
+            st.error("Error! Cannot take the square root of a negative number.")
+        else:
+            result = math.sqrt(num1)
+            st.success(f"The square root of {num1} is {result}")
+
     elif operation == "Exponentiation":
-        result = exponentiation(num1, num2)
+        result = math.pow(num1, num2)
+        st.success(f"The result of exponentiation is {result}")
+
     elif operation == "Sine":
-        result = sine(num1)
+        result = math.sin(math.radians(num1))
+        st.success(f"The sine of {num1} degrees is {result}")
+
     elif operation == "Cosine":
-        result = cosine(num1)
+        result = math.cos(math.radians(num1))
+        st.success(f"The cosine of {num1} degrees is {result}")
+
     elif operation == "Tangent":
-        result = tangent(num1)
+        result = math.tan(math.radians(num1))
+        st.success(f"The tangent of {num1} degrees is {result}")
+
     elif operation == "Logarithm":
-        result = logarithm(num1)
-    
-    st.write(f"The result is: {result}")
+        if num1 <= 0:
+            st.error("Error! Logarithm only defined for positive numbers.")
+        else:
+            result = math.log(num1)
+            st.success(f"The logarithm of {num1} is {result}")
